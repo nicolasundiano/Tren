@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Tren.Extensions;
 using Tren.Models;
 
 namespace Tren.Controllers;
@@ -13,9 +14,31 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        var vm = new TrenViewModel();
+        
+        return View(vm);
+    }
+    
+    [HttpPost]
+    public IActionResult AddVagon(TrenViewModel vm)
+    {
+        vm.Tren = vm.TrenString.SplitToIntList();
+        vm.Tren.AddElementToList(vm.Vagon, vm.InRight);
+        vm.TrenString = vm.Tren.JoinToString('-');
+        return View("Index", vm);
+    }
+
+    [HttpPost]
+    public IActionResult RemoveVagon(TrenViewModel vm)
+    {
+        vm.Tren = vm.TrenString.SplitToIntList();
+        vm.Tren.RemoveElementFromList(vm.InRight);
+        vm.TrenString = vm.Tren.JoinToString('-');
+
+        return View("Index", vm);
     }
 
     public IActionResult Privacy()

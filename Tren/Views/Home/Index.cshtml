@@ -1,8 +1,36 @@
-﻿@{
+﻿@model TrenViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <form method="POST" asp-action="AddVagon" asp-controller="Home">
+        <button type="submit" name="InRight" value="False">Add Left</button>
+        <button type="submit" name="InRight" value="True">Add Right</button>
+        <br/>
+        <input type="text" id="Vagon" name="Vagon"/>
+        <input hidden="hidden" readonly="readonly" type="text" id="TrenString" name="TrenString" value="@Model.TrenString"/>
+    </form>
+    <br/>
+    <span>Tren: </span>
+    <br/>
+    @{
+        foreach (var vagon in Model.Tren)
+        {
+            <span>@vagon</span>
+        }}
+    
+    <br/>
+    <br/>
+    @{
+        if (Model.Tren.Count > 0)
+        {
+            <form method="POST" asp-action="RemoveVagon" asp-controller="Home">
+                <input hidden="hidden" readonly="readonly" type="text" id="TrenString" name="TrenString" value="@Model.TrenString"/>
+                <button type="submit" name="InRight" value="False">Remove Left</button>
+                <button type="submit" name="InRight" value="True">Remove Right</button>
+            </form>
+        }
+    }
 </div>
